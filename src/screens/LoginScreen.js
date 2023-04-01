@@ -1,4 +1,5 @@
-import React, {useContext, useState} from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   Button,
   Text,
@@ -6,24 +7,39 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  Image
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { white } from '../assets/styles/Style';
 import {AuthContext} from '../context/AuthContext';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const {isLoading, login} = useContext(AuthContext);
+  const [username, setUsername] = useState("Mobile");
+  const [password, setPassword] = useState("111111");
+  const {isLoading, login, userInfo} = useContext(AuthContext);
+  
+  
+  const { navigate} = useNavigation();
+
+  useEffect(() => {
+    if(userInfo) {
+      navigate('Home');
+    }
+  }, [userInfo]);
 
   return (
     <View style={styles.container}>
       <Spinner visible={isLoading} />
       <View style={styles.wrapper}>
+        <SafeAreaView>
+          <Image style={styles.logo} source={require('../assets/images/pictures/slogan.jpg')} />  
+        </SafeAreaView>
         <TextInput
           style={styles.input}
-          value={email}
-          placeholder="Enter email"
-          onChangeText={text => setEmail(text)}
+          value={username}
+          placeholder="Enter username"
+          onChangeText={text => setUsername(text)}
         />
 
         <TextInput
@@ -37,7 +53,7 @@ const LoginScreen = ({navigation}) => {
         <Button
           title="Login"
           onPress={() => {
-            login(email, password);
+            login(username, password);
           }}
         />
 
@@ -57,6 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: white,
   },
   wrapper: {
     width: '80%',
@@ -71,6 +88,10 @@ const styles = StyleSheet.create({
   link: {
     color: 'blue',
   },
+  logo: {
+    alignSelf: 'center',
+    marginBottom: 20
+  }
 });
 
 export default LoginScreen;

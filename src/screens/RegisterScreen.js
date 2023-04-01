@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  SafeAreaView,
+  Image
 } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {AuthContext} from '../context/AuthContext';
@@ -21,6 +23,9 @@ const RegisterScreen = ({navigation}) => {
     <View style={styles.container}>
       <Spinner visible={isLoading} />
       <View style={styles.wrapper}>
+      <SafeAreaView>
+          <Image style={styles.logo} source={require('../assets/images/pictures/slogan.jpg')} />  
+        </SafeAreaView>
         <TextInput
           style={styles.input}
           value={name}
@@ -80,6 +85,10 @@ const styles = StyleSheet.create({
   link: {
     color: 'blue',
   },
+  logo: {
+    alignSelf: 'center',
+    marginBottom: 20
+  }
 });
 
 export default RegisterScreen;
